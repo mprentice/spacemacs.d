@@ -56,7 +56,7 @@ This function should only modify configuration layer settings."
      neotree
      nginx
      org
-     osx
+     ;; osx
      python
      racket
      react
