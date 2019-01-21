@@ -478,7 +478,9 @@ Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (when (file-exists-p custom-file)
     (load custom-file))
-  (add-to-list 'org-agenda-files (expand-file-name "org" user-home-directory))
+  (with-eval-after-load 'org
+    (add-to-list 'org-agenda-files (expand-file-name "org"
+                                                     user-home-directory)))
   (add-to-list 'auto-mode-alist '("\\.env\\'" . shell-script-mode))
   (add-hook 'makefile-mode-hook #'(lambda () (setq tab-width 8)))
   (with-eval-after-load 'anaconda-mode
