@@ -1,3 +1,4 @@
 secrets.el
 local.el
 custom.el
+.spacemacs.env
