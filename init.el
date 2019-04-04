@@ -380,7 +380,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc…
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
-   dotspacemacs-smart-closing-parenthesis nil
+   dotspacemacs-smart-closing-parenthesis t
 
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
@@ -476,13 +476,12 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  (when (file-exists-p custom-file)
-    (load custom-file))
+  (mikemacs/load-if-exists custom-file)
   (with-eval-after-load 'org
     (add-to-list 'org-agenda-files (expand-file-name "org"
                                                      user-home-directory)))
   (add-to-list 'auto-mode-alist '("\\.env\\'" . shell-script-mode))
-  (add-hook 'makefile-mode-hook #'(lambda () (setq tab-width 8)))
+  (add-hook 'makefile-mode-hook 'mikemacs/makefile-tab-width-hook)
   (with-eval-after-load 'anaconda-mode
     (remove-hook 'anaconda-mode-response-read-fail-hook
                  'anaconda-mode-show-unreadable-response))
@@ -498,11 +497,16 @@ before packages are loaded."
   ;; Load secrets, if any (not version controlled)
   (let ((my-secrets-file (expand-file-name "secrets.el"
                                            dotspacemacs-directory)))
-    (when (file-exists-p my-secrets-file)
-      (load-file my-secrets-file)))
+    (mikemacs/load-if-exists my-secrets-file))
   ;; Load a file with local-only settings (not version controlled).
   (let ((my-local-file (expand-file-name "local.el"
                                          dotspacemacs-directory)))
-    (when (file-exists-p my-local-file)
-      (load-file my-local-file)))
+    (mikemacs/load-if-exists my-local-file))
   )
+
+(defun mikemacs/load-if-exists (f)
+  (when (file-exists-p f)
+    (load-file f)))
+
+(defun mikemacs/makefile-tab-width-hook ()
+  (setq tab-width 8))
