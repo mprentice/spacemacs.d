@@ -59,7 +59,9 @@ This function should only modify configuration layer settings."
      ;; osx
      (python :variables
              python-pipenv-activate t
-             python-test-runner '(pytest nose))
+             python-test-runner '(pytest nose)
+             python-formatter 'black
+             python-format-on-save t)
      racket
      react
      restclient
@@ -490,12 +492,6 @@ before packages are loaded."
   (use-package python-docstring
     :ensure t
     :config (python-docstring-install))
-  (use-package blacken
-    :ensure t
-    :hook (python-mode . blacken-mode))
-  (use-package pipenv
-    :ensure t
-    :hook (python-mode . pipenv-mode))
   ;; Load secrets, if any (not version controlled)
   (let ((my-secrets-file (expand-file-name "secrets.el"
                                            dotspacemacs-directory)))
