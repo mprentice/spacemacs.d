@@ -57,7 +57,9 @@ This function should only modify configuration layer settings."
      nginx
      org
      ;; osx
-     python
+     (python :variables
+             python-pipenv-activate t
+             python-test-runner '(pytest nose))
      racket
      react
      restclient
