@@ -2,3 +2,4 @@ secrets.el
 local.el
 custom.el
 .spacemacs.env
+*_backup.el
