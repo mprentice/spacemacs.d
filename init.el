@@ -491,7 +491,7 @@ before packages are loaded."
                  'anaconda-mode-show-unreadable-response))
   (use-package python-docstring
     :ensure t
-    :config (python-docstring-install))
+    :config (add-hook 'python-mode-hook 'mikemacs/python-docstring-mode-hook))
   ;; Load secrets, if any (not version controlled)
   (let ((my-secrets-file (expand-file-name "secrets.el"
                                            dotspacemacs-directory)))
@@ -508,3 +508,6 @@ before packages are loaded."
 
 (defun mikemacs/makefile-tab-width-hook ()
   (setq tab-width 8))
+
+(defun mikemacs/python-docstring-mode-hook ()
+  (python-docstring-mode t))
