@@ -483,7 +483,8 @@ before packages are loaded."
   (mikemacs/load-if-exists custom-file)
   (with-eval-after-load 'org
     (add-to-list 'org-agenda-files (expand-file-name "org"
-                                                     user-home-directory)))
+                                                     user-home-directory))
+    (add-hook 'org-mode-hook 'spacemacs/toggle-auto-fill-mode-on))
   (add-to-list 'auto-mode-alist '("\\.env\\'" . shell-script-mode))
   (add-hook 'makefile-mode-hook 'mikemacs/makefile-tab-width-hook)
   (with-eval-after-load 'anaconda-mode
@@ -500,6 +501,7 @@ before packages are loaded."
   (let ((my-local-file (expand-file-name "local.el"
                                          dotspacemacs-directory)))
     (mikemacs/load-if-exists my-local-file))
+  (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
   )
 
 (defun mikemacs/load-if-exists (f)
