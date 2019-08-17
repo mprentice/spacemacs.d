@@ -482,6 +482,7 @@ Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (mikemacs/load-if-exists custom-file)
   (with-eval-after-load 'org
+    (add-to-list 'org-babel-load-languages '(ledger . t))
     (add-to-list 'org-agenda-files (expand-file-name "org"
                                                      user-home-directory))
     (add-hook 'org-mode-hook 'spacemacs/toggle-auto-fill-mode-on))
@@ -501,8 +502,7 @@ before packages are loaded."
   (let ((my-local-file (expand-file-name "local.el"
                                          dotspacemacs-directory)))
     (mikemacs/load-if-exists my-local-file))
-  (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
-  )
+  (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode)))
 
 (defun mikemacs/load-if-exists (f)
   (when (file-exists-p f)
