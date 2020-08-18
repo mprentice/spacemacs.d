@@ -52,7 +52,7 @@ This function should only modify configuration layer settings."
      html
      javascript
      latex
-     lsp
+     ;; lsp
      markdown
      ;; multiple-cursors
      ;; neotree
@@ -60,6 +60,7 @@ This function should only modify configuration layer settings."
      org
      ;; osx
      (python :variables
+             python-backend 'anaconda
              ;; python-backend 'lsp
              python-pipenv-activate t
              python-test-runner '(pytest nose)
@@ -88,7 +89,7 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(unfill python-docstring)
+   dotspacemacs-additional-packages '(unfill)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -470,7 +471,12 @@ It should only modify the values of Spacemacs settings."
    ;; Run `spacemacs/prettify-org-buffer' when
    ;; visiting README.org files of Spacemacs.
    ;; (default nil)
-   dotspacemacs-pretty-docs nil))
+   dotspacemacs-pretty-docs nil
+
+   ;; If nil the home buffer shows the full path of agenda items
+   ;; and todos. If non nil only the file name is shown.
+   dotspacemacs-home-shorten-agenda-source t
+   ))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -502,29 +508,44 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+  ;; Custom
   (mikemacs/load-if-exists custom-file)
+
+  ;; Org
   (with-eval-after-load 'org
     (add-to-list 'org-babel-load-languages '(ledger . t))
     (add-to-list 'org-agenda-files (expand-file-name "org"
                                                      user-home-directory))
     (add-hook 'org-mode-hook 'spacemacs/toggle-auto-fill-mode-on))
+  (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
+
+  ;; Shell
   (add-to-list 'auto-mode-alist '("\\.env\\'" . shell-script-mode))
+
+  ;; Make
   (add-hook 'makefile-mode-hook 'mikemacs/makefile-tab-width-hook)
-  (with-eval-after-load 'anaconda-mode
-    (remove-hook 'anaconda-mode-response-read-fail-hook
-                 'anaconda-mode-show-unreadable-response))
-  (use-package python-docstring
-    :ensure t
-    :config (add-hook 'python-mode-hook 'mikemacs/python-docstring-mode-hook))
+
+  ;; Python
+  (advice-add 'pipenv--command :around #'mikemacs/my-setup-pipenv-default-directory)
+  ;; workaround to enable auto-completion in Python
+  (with-eval-after-load 'company
+    (add-to-list 'company-backends 'company-anaconda))
+
+  ;; lsp-pyls
+  ;; (setq lsp-pyls-plugins-flake8-max-line-length 110
+        ;; lsp-pyls-plugins-pycodestyle-max-line-length 110)
+
   ;; Load secrets, if any (not version controlled)
   (let ((my-secrets-file (expand-file-name "secrets.el"
                                            dotspacemacs-directory)))
     (mikemacs/load-if-exists my-secrets-file))
+
   ;; Load a file with local-only settings (not version controlled).
   (let ((my-local-file (expand-file-name "local.el"
                                          dotspacemacs-directory)))
     (mikemacs/load-if-exists my-local-file))
-  (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode)))
+  )
 
 (defun mikemacs/load-if-exists (f)
   (when (file-exists-p f)
@@ -533,5 +554,9 @@ before packages are loaded."
 (defun mikemacs/makefile-tab-width-hook ()
   (setq tab-width 8))
 
-(defun mikemacs/python-docstring-mode-hook ()
-  (python-docstring-mode t))
+(defun mikemacs/my-setup-pipenv-default-directory (orig-fun &rest args)
+  "Workaround to set default directory before calling pipenv functions.
+Needed because pipenv can't handle deeply nested modules."
+  (let ((default-directory (or (pipenv-project?) default-directory)))
+    (message "Advising pipenv to use directory %S" default-directory)
+    (apply orig-fun args)))
