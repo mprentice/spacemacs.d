@@ -508,6 +508,9 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  (let ((my-local-file (expand-file-name "before.el"
+                                         dotspacemacs-directory)))
+    (mikemacs/load-if-exists my-local-file))
   (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
   )
 
