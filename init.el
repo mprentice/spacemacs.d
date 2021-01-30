@@ -51,17 +51,19 @@ This function should only modify configuration layer settings."
      html
      javascript
      latex
-     ;; lsp
+     (lsp :variables
+          lsp-pyls-plugins-pycodestyle-max-line-length 89
+          lsp-pyls-plugins-flake8-max-line-length 89)
      markdown
-     ;; multiple-cursors
-     ;; neotree
+     multiple-cursors
+     neotree
      nginx
      org
      ;; osx
      (python :variables
-             python-backend 'anaconda
-             ;; python-backend 'lsp
-             python-pipenv-activate t
+             ;; python-backend 'anaconda
+             python-backend 'lsp
+             python-pipenv-activate nil
              python-test-runner '(pytest nose)
              python-formatter 'black
              python-format-on-save t)
@@ -204,9 +206,13 @@ It should only modify the values of Spacemacs settings."
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
-   ;; `recents' `bookmarks' `projects' `agenda' `todos'.
+   ;; `recents' `recents-by-project' `bookmarks' `projects' `agenda' `todos'.
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
+   ;; The exceptional case is `recents-by-project', where list-type must be a
+   ;; pair of numbers, e.g. `(recents-by-project . (7 .  5))', where the first
+   ;; number is the project limit and the second the limit on the recent files
+   ;; within a project.
    dotspacemacs-startup-lists '((recents . 5)
                                 (projects . 7))
 
@@ -475,6 +481,9 @@ It should only modify the values of Spacemacs settings."
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
    dotspacemacs-icon-title-format nil
+
+   ;; Show trailing whitespace (default t)
+   dotspacemacs-show-trailing-whitespace t
 
    ;; Delete whitespace while saving buffer. Possible values are `all'
    ;; to aggressively delete empty line and long sequences of whitespace,
