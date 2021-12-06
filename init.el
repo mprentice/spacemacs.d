@@ -32,13 +32,14 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(rust
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-enable-snippets-in-popup t)
      better-defaults
      ;; clojure
      csv
@@ -51,9 +52,12 @@ This function should only modify configuration layer settings."
      html
      javascript
      latex
-     (lsp :variables
-          lsp-pyls-plugins-pycodestyle-max-line-length 89
-          lsp-pyls-plugins-flake8-max-line-length 89)
+     ;; (lsp :variables
+     ;;      lsp-pyls-plugins-pycodestyle-max-line-length 89
+     ;;      lsp-pyls-plugins-flake8-max-line-length 89
+     ;;      lsp-pyls-plugins-pycodestyle-ignore "E203"
+     ;;      lsp-pyls-plugins-flake8-ignore "E203"
+     ;;      )
      markdown
      multiple-cursors
      neotree
@@ -61,9 +65,11 @@ This function should only modify configuration layer settings."
      org
      ;; osx
      (python :variables
-             ;; python-backend 'anaconda
-             python-backend 'lsp
-             python-pipenv-activate nil
+             python-backend 'anaconda
+             ;; python-backend 'lsp
+             python-pipenv-activate t
+             python-poetry-activate t
+             python-auto-set-local-pyenv-version 'on-visit
              python-test-runner '(pytest nose)
              python-formatter 'black
              python-format-on-save t)
@@ -74,9 +80,11 @@ This function should only modify configuration layer settings."
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
+     (shell-scripts :variables shell-scripts-format-on-save t)
      ;; spell-checking
      sql
      syntax-checking
+     ;; (templates :variables templates-private-directory  "~/.spacemacs.d/templates")
      terraform
      ;; treemacs
      version-control
@@ -91,7 +99,7 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(unfill)
+   dotspacemacs-additional-packages '(unfill flycheck-prospector)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -218,6 +226,12 @@ It should only modify the values of Spacemacs settings."
 
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive t
+
+   ;; Show numbers before the startup list lines. (default t)
+   dotspacemacs-show-startup-list-numbers t
+
+   ;; The minimum delay in seconds between number key presses. (default 0.4)
+   dotspacemacs-startup-buffer-multi-digit-delay 0.4
 
    ;; Default major mode for a new empty buffer. Possible values are mode
    ;; names such as `text-mode'; and `nil' to use Fundamental mode.
@@ -401,12 +415,16 @@ It should only modify the values of Spacemacs settings."
    ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
 
+   ;; Show the scroll bar while scrolling. The auto hide time can be configured
+   ;; by setting this variable to a number. (default t)
+   dotspacemacs-scroll-bar-while-scrolling t
+
    ;; Control line numbers activation.
    ;; If set to `t', `relative' or `visual' then line numbers are enabled in all
    ;; `prog-mode' and `text-mode' derivatives. If set to `relative', line
    ;; numbers are relative. If set to `visual', line numbers are also relative,
-   ;; but lines are only visual lines are counted. For example, folded lines
-   ;; will not be counted and wrapped lines are counted as multiple lines.
+   ;; but only visual lines are counted. For example, folded lines will not be
+   ;; counted and wrapped lines are counted as multiple lines.
    ;; This variable can also be set to a property list for finer control:
    ;; '(:relative nil
    ;;   :visual nil
@@ -425,9 +443,14 @@ It should only modify the values of Spacemacs settings."
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
 
-   ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
+   ;; If non-nil and `dotspacemacs-activate-smartparens-mode' is also non-nil,
+   ;; `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
+
+   ;; If non-nil smartparens-mode will be enabled in programming modes.
+   ;; (default t)
+   dotspacemacs-activate-smartparens-mode t
 
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
@@ -475,6 +498,9 @@ It should only modify the values of Spacemacs settings."
    ;; %n - Narrow if appropriate
    ;; %z - mnemonics of buffer, terminal, and keyboard coding systems
    ;; %Z - like %z, but including the end-of-line format
+   ;; If nil then Spacemacs uses default `frame-title-format' to avoid
+   ;; performance issues, instead of calculating the frame title by
+   ;; `spacemacs/title-prepare' all the time.
    ;; (default "%I@%S")
    dotspacemacs-frame-title-format "%I@%S"
 
@@ -492,12 +518,15 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
 
-   ;; If non nil activate `clean-aindent-mode' which tries to correct
-   ;; virtual indentation of simple modes. This can interfer with mode specific
+   ;; If non-nil activate `clean-aindent-mode' which tries to correct
+   ;; virtual indentation of simple modes. This can interfere with mode specific
    ;; indent handling like has been reported for `go-mode'.
    ;; If it does deactivate it here.
    ;; (default t)
    dotspacemacs-use-clean-aindent-mode t
+
+   ;; Accept SPC as y for prompts if non-nil. (default nil)
+   dotspacemacs-use-SPC-as-y nil
 
    ;; If non-nil shift your number row to match the entered keyboard layout
    ;; (only in insert state). Currently supported keyboard layouts are:
@@ -516,8 +545,11 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-pretty-docs nil
 
    ;; If nil the home buffer shows the full path of agenda items
-   ;; and todos. If non nil only the file name is shown.
+   ;; and todos. If non-nil only the file name is shown.
    dotspacemacs-home-shorten-agenda-source t
+
+   ;; If non-nil then byte-compile some of Spacemacs files.
+   dotspacemacs-byte-compile t
    ))
 
 (defun dotspacemacs/user-env ()
@@ -557,6 +589,10 @@ before packages are loaded."
   ;; Custom
   (mikemacs/load-if-exists custom-file)
 
+  ;; Snippets
+  (add-to-list 'yas-snippet-dirs (expand-file-name "snippets"
+                                                   "~/.spacemacs.d"))
+
   ;; Org
   (with-eval-after-load 'org
     (add-to-list 'org-babel-load-languages '(ledger . t))
@@ -576,10 +612,10 @@ before packages are loaded."
   ;; workaround to enable auto-completion in Python
   (with-eval-after-load 'company
     (add-to-list 'company-backends 'company-anaconda))
-
-  ;; lsp-pyls
-  ;; (setq lsp-pyls-plugins-flake8-max-line-length 110
-        ;; lsp-pyls-plugins-pycodestyle-max-line-length 110)
+  ;; Setup python prospector to work with flycheck
+  (flycheck-prospector-setup)
+  (add-to-list 'flycheck-disabled-checkers 'python-flake8)
+  (add-to-list 'flycheck-disabled-checkers 'python-pylint)
 
   ;; Load secrets, if any (not version controlled)
   (let ((my-secrets-file (expand-file-name "secrets.el"
@@ -590,6 +626,9 @@ before packages are loaded."
   (let ((my-local-file (expand-file-name "local.el"
                                          dotspacemacs-directory)))
     (mikemacs/load-if-exists my-local-file))
+
+  ;; Turn on scroll bar, which I like.
+  (toggle-scroll-bar 1)
   )
 
 (defun mikemacs/load-if-exists (f)
