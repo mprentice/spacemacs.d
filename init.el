@@ -650,7 +650,12 @@ before packages are loaded."
   (setq user-full-name "Data Mike")
   (setq user-mail-address "mjp35@cornell.edu")
 
-  (setq omnisharp-server-executable-path "/opt/homebrew/bin/omnisharp"))
+  (setq omnisharp-server-executable-path "/opt/homebrew/bin/omnisharp")
+
+  ;; (use-package a68-mode
+  ;;   :ensure t
+  ;;   :mode "\\.algol\\'")
+  )
 
 (defun mike-asm-mode-hook ()
   (if (or (string-match "\\.ram\\'" buffer-file-name)
@@ -675,52 +680,52 @@ This function is called at the very end of Spacemacs initialization."
    ;; Your init file should contain only one such instance.
    ;; If there is more than one, they won't work right.
    '(package-selected-packages
-     '(ac-ispell ace-jump-helm-line ace-link add-node-modules-path aggressive-indent
-                 anaconda-mode auto-compile auto-highlight-symbol auto-yasnippet
-                 blacken browse-at-remote bui cargo centered-cursor-mode
-                 clean-aindent-mode code-cells column-enforce-mode
-                 company-anaconda compat concurrent counsel counsel-gtags ctable
-                 cython-mode dap-mode deferred define-word devdocs diminish
-                 dired-quick-sort dotenv-mode drag-stuff dumb-jump editorconfig
-                 elisp-def elisp-slime-nav emr envrc epc eval-sexp-fu evil-anzu
-                 evil-args evil-cleverparens evil-collection evil-easymotion
-                 evil-escape evil-evilified-state evil-exchange evil-goggles
-                 evil-iedit-state evil-indent-plus evil-lion evil-lisp-state
-                 evil-matchit evil-mc evil-nerd-commenter evil-numbers evil-org
-                 evil-surround evil-textobj-line evil-tutor evil-unimpaired
-                 evil-visual-mark-mode evil-visualstar expand-region eyebrowse
-                 fancy-battery flx-ido flycheck-elsa flycheck-package
-                 flycheck-pos-tip flycheck-rust font-lock+ fuzzy ggtags gh-md
-                 git-gutter-fringe git-link git-messenger git-modes
-                 git-timemachine gitignore-templates gnuplot golden-ratio
-                 google-translate grizzl helm-ag helm-c-yasnippet helm-company
-                 helm-cscope helm-descbinds helm-git-grep helm-gtags helm-ls-git
-                 helm-lsp helm-make helm-mode-manager helm-org helm-org-rifle
-                 helm-projectile helm-purpose helm-pydoc helm-swoop helm-themes
-                 helm-xref help-fns+ hide-comnt highlight-indentation
-                 highlight-numbers highlight-parentheses hl-todo holy-mode htmlize
-                 hungry-delete hybrid-mode impatient-mode import-js importmagic
-                 indent-guide info+ inheritenv inspector ivy js-doc js2-mode
-                 js2-refactor link-hint live-py-mode livid-mode load-env-vars
-                 lorem-ipsum lsp-docker lsp-origami lsp-pyright lsp-python-ms
-                 lsp-treemacs lsp-ui macrostep markdown-toc mmm-mode multi-line
-                 multiple-cursors mwim nameless nodejs-repl nose npm-mode
-                 open-junk-file org-cliplink org-contrib org-download org-mime
-                 org-pomodoro org-present org-projectile org-rich-yank
-                 org-superstar orgit-forge overseer paradox password-generator
-                 pcre2el pip-requirements pipenv pippel poetry popwin prettier-js
-                 py-isort pydoc pyenv-mode pylookup pytest pythonic pyvenv
-                 quickrun racer rainbow-delimiters request restart-emacs ron-mode
-                 rust-mode simple-httpd skewer-mode smeargle space-doc
-                 spaceline-all-the-icons spacemacs-purpose-popwin
-                 spacemacs-whitespace-cleanup sphinx-doc sql-indent sqlup-mode
-                 stickyfunc-enhance string-edit-at-point string-inflection swiper
-                 symbol-overlay symon term-cursor tern toc-org toml-mode
-                 tree-sitter tree-sitter-langs treemacs-evil treemacs-icons-dired
-                 treemacs-magit treemacs-persp treemacs-projectile treesit-fold
-                 tsc undo-tree unfill use-package uuidgen vi-tilde-fringe
-                 vim-powerline volatile-highlights web-beautify which-key winum
-                 writeroom-mode ws-butler xcscope yapfify yasnippet-snippets)))
+     '(a68-mode ac-ispell ace-jump-helm-line ace-link add-node-modules-path
+                aggressive-indent anaconda-mode auto-compile auto-highlight-symbol
+                auto-yasnippet blacken browse-at-remote bui cargo
+                centered-cursor-mode clean-aindent-mode code-cells
+                column-enforce-mode company-anaconda compat concurrent counsel
+                counsel-gtags ctable cython-mode dap-mode deferred define-word
+                devdocs diminish dired-quick-sort dotenv-mode drag-stuff dumb-jump
+                editorconfig elisp-def elisp-slime-nav emr envrc epc eval-sexp-fu
+                evil-anzu evil-args evil-cleverparens evil-collection
+                evil-easymotion evil-escape evil-evilified-state evil-exchange
+                evil-goggles evil-iedit-state evil-indent-plus evil-lion
+                evil-lisp-state evil-matchit evil-mc evil-nerd-commenter
+                evil-numbers evil-org evil-surround evil-textobj-line evil-tutor
+                evil-unimpaired evil-visual-mark-mode evil-visualstar
+                expand-region eyebrowse fancy-battery flx-ido flycheck-elsa
+                flycheck-package flycheck-pos-tip flycheck-rust font-lock+ fuzzy
+                ggtags gh-md git-gutter-fringe git-link git-messenger git-modes
+                git-timemachine gitignore-templates gnuplot golden-ratio
+                google-translate grizzl helm-ag helm-c-yasnippet helm-company
+                helm-cscope helm-descbinds helm-git-grep helm-gtags helm-ls-git
+                helm-lsp helm-make helm-mode-manager helm-org helm-org-rifle
+                helm-projectile helm-purpose helm-pydoc helm-swoop helm-themes
+                helm-xref help-fns+ hide-comnt highlight-indentation
+                highlight-numbers highlight-parentheses hl-todo holy-mode htmlize
+                hungry-delete hybrid-mode impatient-mode import-js importmagic
+                indent-guide info+ inheritenv inspector ivy js-doc js2-mode
+                js2-refactor link-hint live-py-mode livid-mode load-env-vars
+                lorem-ipsum lsp-docker lsp-origami lsp-pyright lsp-python-ms
+                lsp-treemacs lsp-ui macrostep markdown-toc mmm-mode multi-line
+                multiple-cursors mwim nameless nodejs-repl nose npm-mode
+                open-junk-file org-cliplink org-contrib org-download org-mime
+                org-pomodoro org-present org-projectile org-rich-yank
+                org-superstar orgit-forge overseer paradox password-generator
+                pcre2el pip-requirements pipenv pippel poetry popwin prettier-js
+                py-isort pydoc pyenv-mode pylookup pytest pythonic pyvenv quickrun
+                racer rainbow-delimiters request restart-emacs ron-mode rust-mode
+                simple-httpd skewer-mode smeargle space-doc
+                spaceline-all-the-icons spacemacs-purpose-popwin
+                spacemacs-whitespace-cleanup sphinx-doc sql-indent sqlup-mode
+                stickyfunc-enhance string-edit-at-point string-inflection swiper
+                symbol-overlay symon term-cursor tern toc-org toml-mode
+                tree-sitter tree-sitter-langs treemacs-evil treemacs-icons-dired
+                treemacs-magit treemacs-persp treemacs-projectile treesit-fold tsc
+                undo-tree unfill use-package uuidgen vi-tilde-fringe vim-powerline
+                volatile-highlights web-beautify which-key winum writeroom-mode
+                ws-butler xcscope yapfify yasnippet-snippets)))
   (custom-set-faces
    ;; custom-set-faces was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
