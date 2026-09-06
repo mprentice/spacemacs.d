@@ -89,7 +89,10 @@ This function should only modify configuration layer settings."
      ;;              tree-sitter-syntax-highlight-enable t
      ;;              tree-sitter-indent-enable t
      ;;              tree-sitter-fold-enable t)
-     treemacs
+     (treemacs :variables
+               treemacs-use-scope-type 'Perspectives
+               treemacs-use-git-mode 'deferred
+               treemacs-use-all-the-icons-theme t)
      version-control
      web-beautify
      (yaml :variables
