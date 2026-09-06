@@ -640,6 +640,8 @@ before packages are loaded."
   (add-hook 'org-mode-hook 'spacemacs/toggle-auto-fill-mode-on)
   (add-hook 'org-mode-hook 'spacemacs/toggle-display-fill-column-indicator-on)
 
+  (add-hook 'makefile-mode-hook #'spacemacs/toggle-whitespace-on)
+
   (add-to-list 'auto-mode-alist '("\\.rasp\\'" . asm-mode))
   (add-to-list 'auto-mode-alist '("\\.ram\\'" . asm-mode))
 
